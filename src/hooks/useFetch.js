@@ -22,7 +22,8 @@ export const useFetch = (location) => {
     useEffect( () => {
         setState(initialValuesFetch);
         isMounted.current = true;
-        getForecast(location)
+        if(location){
+            getForecast(location)
             .then( res => {
                 if(isMounted.current)
                     setState( res );
@@ -30,6 +31,7 @@ export const useFetch = (location) => {
             .catch( err => {
                 setState(err)
             } );
+        }
 
     }, [ location ]);
 

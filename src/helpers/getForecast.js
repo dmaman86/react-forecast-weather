@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export const getForecast = async(location) => {
 
-    const url = `http://www.7timer.info/bin/api.pl?lon=${location.longitude}&lat=${location.latitude}&product=civillight&output=json`;
-    const urlImage = `http://www.7timer.info/bin/astro.php?lon=${ location.longitude }&lat=${ location.latitude }&ac=0&lang=en&unit=metric&output=internal&tzshift=0`;
+    const url = `https://www.7timer.info/bin/api.pl?lon=${location.longitude}&lat=${location.latitude}&product=civillight&output=json`;
+    const urlImage = `https://www.7timer.info/bin/astro.php?lon=${ location.longitude }&lat=${ location.latitude }&ac=0&lang=en&unit=metric&output=internal&tzshift=0`;
 
     const invalidLocation = 'ERROR: no geographic location specified';
     const errorServer = 'weather forecast service is not available right now, please try again later.';
