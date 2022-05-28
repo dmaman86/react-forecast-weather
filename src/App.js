@@ -21,7 +21,7 @@ export const App = ({ defaultLocations = [] }) => {
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<HeaderItem />}>
+                    <Route exact path="/" element={<HeaderItem />}>
                         <Route path="forecast" 
                                 element={<ForecastScreen
                                             locations={locations}
