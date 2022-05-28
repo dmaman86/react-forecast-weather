@@ -19,7 +19,7 @@ export const App = ({ defaultLocations = [] }) => {
 
     return(
         <>
-            <BrowserRouter basename='/'>
+            <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<HeaderItem />}>
                         <Route path="forecast" 
