@@ -4,7 +4,7 @@ A simple application to display 7-day weather forecast using the
 [7timer API](https://www.7timer.info).
 
 ## Demo
-https://dmaman86.github.io/forecast
+https://dmaman86.github.io/react-forecast-weather/
 
 ## Dependencies
     - React 18+
