@@ -1,14 +1,8 @@
-import React from 'react';
+
 import PropTypes from 'prop-types';
 
 import { RowForecastWeek } from './RowForecastWeek';
 
-/**
- * this component is to show next 7 days forecast
- * @param dataForecast - array
- * @returns {JSX.Element}
- * @constructor
- */
 export const WeekForecast = ({ dataForecast }) => {
 
     return(
@@ -39,5 +33,15 @@ export const WeekForecast = ({ dataForecast }) => {
 }
 
 WeekForecast.propTypes = {
-    dataForecast: PropTypes.array.isRequired
-}
+    dataForecast: PropTypes.arrayOf(
+        PropTypes.shape({
+            date: PropTypes.number.isRequired,
+            weather: PropTypes.string.isRequired,
+            temp2m: PropTypes.shape({
+                min: PropTypes.number.isRequired,
+                max: PropTypes.number.isRequired,
+            }).isRequired,
+            wind10m_max: PropTypes.number.isRequired,
+        })
+    ).isRequired
+};

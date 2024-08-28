@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { InfoForecast } from './InfoForecast';
-import { WeekForecast } from './WeekForecast';
+import { InfoForecast, WeekForecast } from '@/components';
 
-/**
- * cards like carousel forecast information
- * @param dataForecast - array
- * @returns {JSX.Element}
- * @constructor
- */
-export const CarouselForecastItem  = ({ dataForecast }) => {
+
+export const CarouselForecastItem = ({ dataForecast }) => {
 
     const [ cardIndex, setCardIndex ] = useState(0);
     const [ weekButton, setWeekButton ] = useState(false);
@@ -29,7 +23,7 @@ export const CarouselForecastItem  = ({ dataForecast }) => {
         setWeekButton( !weekButton );
     }
 
-    return(
+    return (
         <>
             <div className='cards'>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-center">
@@ -63,9 +57,19 @@ export const CarouselForecastItem  = ({ dataForecast }) => {
                 }
             </div>
         </>
-    );
+    )
 }
 
 CarouselForecastItem.propTypes = {
-    dataForecast: PropTypes.array.isRequired
-}
+    dataForecast: PropTypes.arrayOf(
+        PropTypes.shape({
+            date: PropTypes.number.isRequired,
+            weather: PropTypes.string.isRequired,
+            temp2m: PropTypes.shape({
+                min: PropTypes.number.isRequired,
+                max: PropTypes.number.isRequired,
+            }).isRequired,
+            wind10m_max: PropTypes.number.isRequired,
+        })
+    ).isRequired
+};

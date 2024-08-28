@@ -16,7 +16,7 @@ Open console, execute: npm install
 
 ## App screenshots
 
-![forecast home init](./src/images/screenshots/forecast-home-init.png) | ![locations home init](./src/images/screenshots/locations-screen-init.png)
+![forecast home init](./src/assets/screenshots/forecast-home-init.png) | ![locations home init](./src/assets/screenshots/locations-screen-init.png)
 :---: | :---:
-![locations home values](./src/images/screenshots/locations-screen-insert.png) | ![forecast home values](./src/images/screenshots/forecast-screen-show-values.png)
-![forecast home day](./src/images/screenshots/forecast-screen-per-day.png) | ![forecast home next days](./src/images/screenshots/forecast-screen-days.png)
+![locations home values](./src/assets/screenshots/locations-screen-insert.png) | ![forecast home values](./src/assets/screenshots/forecast-screen-show-values.png)
+![forecast home day](./src/assets/screenshots/forecast-screen-per-day.png) | ![forecast home next days](./src/assets/screenshots/forecast-screen-days.png)

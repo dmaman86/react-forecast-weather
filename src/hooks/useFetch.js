@@ -1,39 +1,37 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
-import { initialValuesFetch } from '../helpers/types';
-import { getForecast } from '../helpers/getForecast';
+export const useFetch = () => {
 
-/**
- * hooks to fetch api 7timer
- * @param location
- * @returns {{dataForecast: null, loading: boolean, error: null, dataImage: null}}
- */
-export const useFetch = (location) => {
+    const [ loading, setLoading ] = useState(false);
+    let controller = null;
 
-    const isMounted = useRef(true);
-    const [ state, setState ] = useState(initialValuesFetch);
+    const callEndPoint = async (axiosCall) => {
+        let response = { data: null, error: null };
 
-    useEffect( () => {
-        return () => {
-            isMounted.current = false;
+        if(axiosCall.controller) controller = axiosCall.controller;
+        setLoading(true);
+
+        try{
+            const result = await axiosCall.call;
+            response.data = result.data;
+        }catch(err){
+            response.error = err;
+        }finally{
+            setLoading(false);
         }
+        return response;
+    }
+
+    const cancelEndPoint = () => {
+        setLoading(false);
+        if(controller) controller.abort();
+    }
+
+    useEffect(() => {
+        return () => {
+            cancelEndPoint();
+        };
     }, []);
 
-    useEffect( () => {
-        setState(initialValuesFetch);
-        isMounted.current = true;
-        if(location){
-            getForecast(location)
-            .then( res => {
-                if(isMounted.current)
-                    setState( res );
-            })
-            .catch( err => {
-                setState(err)
-            } );
-        }
-
-    }, [ location ]);
-
-    return state;
+    return { loading, callEndPoint };
 }

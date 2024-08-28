@@ -1,57 +1,67 @@
-import { useState } from 'react';
-import { validatorForm } from '../helpers/validatorForm'
+import { useState, useCallback } from "react";
 
-/**
- * hooks to manager form to add new location
- * @param options
- * @returns {unknown[]}
- */
-export const useForm = ( options ) => {
+const validateField = (field) => {
+    const fieldErrors = [];
 
-    const [values, setValues] = useState(options.values);
-    const [ errors, setErrors ] = useState(options.errors);
+    for(const validation of field.validations){
+        const result = validation(field.value.trim());
+        if(!result.isValid){
+            fieldErrors.push(result.message);
+        }
+    }
+    return fieldErrors;
+}
 
-    const resetErrors = () => {
-        setErrors( options.errors );
+const validateForm = (formState) => {
+    const validationErrors = {};
+    let hasErrors = false;
+
+    for(const name in formState){
+        const fieldErrors = validateField(formState[name]);
+        if(fieldErrors.length){
+            validationErrors[name] = fieldErrors;
+            hasErrors = true;
+        }
     }
 
-    const resetValues = () => {
-        setValues(options.values);
-    }
+    return { validationErrors, hasErrors };
+}
 
-    /**
-     * this function get event and item key to save and display
-     * @param e event
-     * @param item key of field
-     */
-    const handleInputChange = (e, item) => {
-        const updateObject = { ...values };
-        updateObject[item] = e.target.value;
-        setValues(updateObject);
-    }
+export const useForm = (initialValues = {}) => {
 
-    /**
-     * this function validate if current location not
-     * exist in array of locations
-     * @returns {boolean}
-     */
-    const validate = () => {
-        sanitizeValues();
-        return validatorForm.validate( values,
-                                       options.addNewLocation,
-                                       setErrors );
-    }
+    const [ formState, setFormState ] = useState(initialValues);
+    const [ errors, setErrors ] = useState({});
 
-    const sanitizeValues = () => {
-        values.nameLocation = values.nameLocation.trim();
-        values.latitudeLocation = values.latitudeLocation.trim();
-        values.longitudeLocation = values.longitudeLocation.trim();
-    }
+    const handleChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setFormState(prevFormState => ({
+            ...prevFormState,
+            [name]: {
+                ...prevFormState[name],
+                value
+            }
+        }));
+    }, []);
 
-    return [ values,
-             errors,
-             handleInputChange,
-             resetValues,
-             resetErrors,
-             validate ];
+    const handleFocus = useCallback((e) => {
+        const { name } = e.target;
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: []
+        }));
+    }, []);
+
+    const validate = useCallback(() => {
+        const { validationErrors, hasErrors } = validateForm(formState);
+        setErrors(validationErrors);
+        return !hasErrors;
+    }, [formState]);
+
+    return {
+        formState,
+        errors,
+        handleChange,
+        handleFocus,
+        validate
+    }
 }
