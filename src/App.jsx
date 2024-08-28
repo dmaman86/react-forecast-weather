@@ -13,7 +13,7 @@ export const App = () => {
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/react-forecast-weather">
         <HeaderItem />
         <Routes>
           <Route path="/forecast" 
