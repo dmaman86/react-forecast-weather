@@ -26,14 +26,31 @@ export const optionsWeather = {
        ts: 'Lifted Index less than -5',
        tsrain: 'Lifted Index less than -5 with rain'
    },
+   icons: {
+        clear: '☀️',
+        pcloudy: '⛅️',  
+        mcloudy: '🌥',  
+        cloudy: '☁️',
+        humid: '💧',  
+        lightrain: '🌦',  
+        oshower: '🌦',  
+        ishower: '🌦',  
+        lightsnow: '🌨', 
+        rain: '🌧',
+        snow: '❄️',
+        rainsnow: '🌨',  
+        ts: '⛈',  
+        tsrain: '⛈🌧',
+        wind: '💨'
+   },
    winSpeed:{
-       1: 'No wind',
-       2: '0.3-3.4m/s (light)',
-       3: '3.4-8.0m/s (moderate)',
-       4: '8.0-10.8m/s (fresh)',
-       5: '10.8-17.2m/s (strong)',
-       6: '17.2-24.5m/s (gale)',
-       7: '24.5-32.6m/s (storm)',
-       8: 'Over 32.6m/s (hurricane)'
+        1: 'No wind',
+        2: '1.1-12.2 km/h (light)',         
+        3: '12.2-28.8 km/h (moderate)',      
+        4: '28.8-38.9 km/h (fresh)',         
+        5: '38.9-61.9 km/h (strong)',        
+        6: '61.9-88.2 km/h (gale)',          
+        7: '88.2-117.4 km/h (storm)',        
+        8: 'Over 117.4 km/h (hurricane)'     
    }
 };

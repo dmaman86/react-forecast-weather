@@ -32,8 +32,8 @@ export const FormLocationItem = ({ addItem }) => {
         if(validate()){
             addItem({
                 name: formState.name.value,
-                latitude: formState.latitude.value,
-                longitude: formState.longitude.value
+                latitude: parseFloat(formState.latitude.value),
+                longitude: parseFloat(formState.longitude.value)
             });
         }
     }

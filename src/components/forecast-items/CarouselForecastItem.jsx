@@ -1,63 +1,42 @@
 import { useState } from 'react';
+import { Box, IconButton } from '@mui/material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
-import { InfoForecast, WeekForecast } from '@/components';
+import { InfoForecast } from '@/components';
 
 
 export const CarouselForecastItem = ({ dataForecast }) => {
 
-    const [ cardIndex, setCardIndex ] = useState(0);
-    const [ weekButton, setWeekButton ] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-    const nextCard = () => {
-        const _cardIndex = cardIndex >= dataForecast.length -1 ? 0 : cardIndex + 1;
-        setCardIndex( _cardIndex );
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === dataForecast.length - 1 ? 0 : prevIndex + 1
+        );
     };
 
-    const prevCard = () => {
-        const _cardIndex = cardIndex <= 0 ? dataForecast.length - 1 : cardIndex - 1;
-        setCardIndex( _cardIndex );
-    }
-
-    const handleWeek = () => {
-        setWeekButton( !weekButton );
-    }
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? dataForecast.length - 1 : prevIndex - 1
+        );
+    };
 
     return (
-        <>
-            <div className='cards'>
-                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                    {
-                        !weekButton &&
-                            <>
-                                <button type="button"
-                                    className="btn btn-outline-dark btn-sm"
-                                    onClick={prevCard}>
-                                    Previous Day
-                                </button>
-                                <button type="button"
-                                        className="btn btn-outline-dark btn-sm"
-                                        onClick={nextCard}>
-                                    Next Day
-                                </button>
-                            </>
-                    }
-                    <button type="button"
-                            className="btn btn-outline-dark btn-sm"
-                            onClick={handleWeek}>
-                        7-Day Forecast { !weekButton ? ' show' : ' hide'}
-                    </button>
-                </div>
-                {
-                    !weekButton ? 
-                        <div className='cards__item'>
-                            <InfoForecast dataForecast={dataForecast[ cardIndex ]} />
-                        </div>
-                        : <WeekForecast dataForecast={dataForecast} />
-                }
-            </div>
-        </>
-    )
+        <Box position="relative" display="flex" alignItems="center">
+            <IconButton onClick={handlePrev} sx={{ position: 'absolute', left: 0, zIndex: 1 }}>
+                <ArrowBackIos />
+            </IconButton>
+            
+            <Box flexGrow={1} display="flex" justifyContent="center">
+                <InfoForecast dataForecast={dataForecast[currentIndex]} />
+            </Box>
+            
+            <IconButton onClick={handleNext} sx={{ position: 'absolute', right: 0, zIndex: 1 }}>
+                <ArrowForwardIos />
+            </IconButton>
+        </Box>
+    );
 }
 
 CarouselForecastItem.propTypes = {

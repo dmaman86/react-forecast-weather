@@ -14,14 +14,16 @@ const LocationsListSelect = ({ location, onSelect, isSelected }) => {
 
     return (
         <>
-            <li
-                type="button"
+            <tr
                 id={location.name}
-                className={`list-group-item${isSelected ? ' list-group-item-success' : ''}`}
+                className={isSelected ? 'table-success' : ''}
                 onClick={handleClick}
+                style={{ cursor: 'pointer' }}
             >
-                {location.name}
-            </li>
+                <td>{location.name}</td>
+                <td>{location.latitude}</td>
+                <td>{location.longitude}</td>
+            </tr>
         </>
     )
 }
@@ -35,14 +37,12 @@ LocationsListSelect.propTypes = {
 export const ForecastScreen = ({ locations }) => {
     const [location, setLocation] = useState(null);
     const [dataForecast, setDataForecast] = useState(null);
-    const [dataImage, setDataImage] = useState(null);
     const { loading, callEndPoint } = useFetch();
     const [error, setError] = useState(null);
 
     const handleLocationChange = (selectedLocation) => {
         setLocation(selectedLocation);
         setDataForecast(null);
-        setDataImage(null);
     }
 
     const fetchForecastData = async () => {
@@ -59,7 +59,6 @@ export const ForecastScreen = ({ locations }) => {
                 setError(result.error);
             } else {
                 setDataForecast(result.data?.dataseries);
-                setDataImage(`https://www.7timer.info/bin/astro.php?lon=${ location.longitude }&lat=${ location.latitude }&ac=0&lang=en&unit=metric&output=internal&tzshift=0`);
             }
         }
     }
@@ -69,40 +68,33 @@ export const ForecastScreen = ({ locations }) => {
     return (
         <>
             <div className="container p-3">
-                <div className="row p-3">
-                    <div className={'col-md-' + (dataForecast ? '6' : '12')}>
+                <div className="row">
+                    <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h2 className="card-title">Forecast: {location?.name}</h2>
+                                <h2 className="card-title">
+                                    {!location && !dataForecast ? (
+                                        "Please select a location to view the forecast"
+                                    ) : error ? (
+                                        `Error: ${error}`
+                                    ) : (
+                                        `Forecast: ${location?.name}`
+                                    )}
+                                </h2>
                             </div>
-                            <div className="text-center">
-                                {!location ? (
-                                    // No se ha elegido una ciudad, mostrar la imagen de clima predeterminada
+                            <div className="card-text">
+                                {!location && !dataForecast ? (
                                     <img src={weather} className="rounded mx-auto d-block imageStyle" alt="logo weather" />
                                 ) : loading ? (
-                                    // Cargando datos, mostrar la imagen de carga
                                     <img src={loadingData} className="rounded mx-auto d-block imageStyle" alt="wait until the page loads" />
                                 ) : error ? (
-                                    // Hubo un error, mostrar la imagen de clima predeterminada y el mensaje de error
-                                    <>
-                                        <img src={weather} className="rounded mx-auto d-block imageStyle" alt="logo weather" />
-                                        <p>{error}</p>
-                                    </>
-                                ) : (
-                                    // Datos cargados correctamente, mostrar la imagen correspondiente al clima
-                                    <img src={dataImage} className="rounded mx-auto d-block imageForecast" alt={`weather in ${location?.name}`} />
+                                    <img src={weather} className="rounded mx-auto d-block imageStyle" alt="logo weather" />
+                                ) : location && dataForecast && (
+                                    <CarouselForecastItem dataForecast={dataForecast} />
                                 )}
                             </div>
                         </div>
                     </div>
-                    {dataForecast && !error && (
-                        <div className="col-md-6 p-3">
-                            <CarouselForecastItem dataForecast={dataForecast} />
-                        </div>
-                    )}
-                </div>
-                <br />
-                <div className="row">
                     <div className="col-md-6">
                         <div className="bg-secondary p-2 text-black bg-opacity-10 border rounded-3">
                             <form onSubmit={(e) => e.preventDefault()}>
@@ -111,29 +103,29 @@ export const ForecastScreen = ({ locations }) => {
                                     <p>(no locations yet...)</p>
                                 ) : (
                                     <>
-                                        <ul className="list-group">
-                                            {locations.map((loc, i) => (
-                                                <LocationsListSelect 
-                                                    key={i} 
-                                                    location={loc} 
-                                                    onSelect={handleLocationChange}
-                                                    isSelected={loc.name === location?.name} />
-                                            ))}
-                                        </ul>
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Latitude</th>
+                                                    <th scope="col">Longitude</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {locations.map((loc, i) => (
+                                                    <LocationsListSelect 
+                                                        key={i} 
+                                                        location={loc} 
+                                                        onSelect={handleLocationChange}
+                                                        isSelected={loc.name === location?.name} />
+                                                ))}
+                                            </tbody>
+                                        </table>
                                     </>
                                 )}
                             </form>
                         </div>
                     </div>
-                    {location && (
-                        <div className="col-md-4">
-                            <div className="bg-secondary p-2 text-black bg-opacity-10 border rounded-3">
-                                <h2>{location.name}</h2>
-                                <p>Latitude: {location.latitude}</p>
-                                <p>Longitude: {location.longitude}</p>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </>
