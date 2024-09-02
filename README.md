@@ -7,16 +7,23 @@ A simple application to display 7-day weather forecast using the
 https://dmaman86.github.io/react-forecast-weather/
 
 ## Dependencies
-    - React 18+
+This project is built with the following key libraries:
+
+- **React 18+**: A JavaScript library for building user interfaces.
+- **Bootstrap**: A popular CSS framework for developing responsive and mobile-first websites.
+- **MUI (Material-UI)**: A React component library that implements Google's Material Design.
+- **Axios**: A promise-based HTTP client for the browser and Node.js, used for making HTTP requests.
 
 ## Installation
-```
-Open console, execute: npm install
+To install the dependencies, run:
+```bash
+npm install
 ```
 
 ## Running the Application
-```
-After installation, execute: npm run dev
+After installation, execute:
+```bash
+npm run dev
 ```
 This will start the development server, and you can view the application in your browser at http://localhost:5173/react-forecast-weather/.
 
